@@ -15,6 +15,7 @@ const getCards = (req, res) => {
     .then(cards => {
       res.send(cards)
     })
+    .catch(() => res.status(500).send({message: "500 Internal server error"}))
 }
 
 cardsRouter.get('/cards', getCards);

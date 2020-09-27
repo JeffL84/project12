@@ -1,12 +1,11 @@
 module.exports = {
     "env": {
-        "browser": true,
+        "browser": false,
         "es2021": true,
         "node": true
     },
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -16,7 +15,7 @@ module.exports = {
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+       
     ],
     "rules": {
       "no-underscore-dangle": ["error", { "allow": ["_id"] }]

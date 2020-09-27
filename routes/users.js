@@ -15,6 +15,7 @@ const getUsers = (req, res) => {
     .then(users => {
       res.send(users)
     })
+    .catch(() => res.status(500).send({message: "500 Internal server error"}))
 }
 
 const getUser = (req, res) => {
@@ -29,7 +30,7 @@ const getUser = (req, res) => {
 
       res.status(404).send({message: "There is no such user"});
     })
-    .catch((err) => res.status(400).send(err))
+    .catch(() => res.status(500).send({message: "500 Internal server error"}))
 }
 
 userRouter.get('/users', getUsers);
