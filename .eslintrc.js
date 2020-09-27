@@ -5,18 +5,12 @@ module.exports = {
         "node": true
     },
     "extends": [
-        "eslint:recommended",
+        "eslint:base",
     ],
     "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "plugins": [
-       
-    ],
     "rules": {
       "no-underscore-dangle": ["error", { "allow": ["_id"] }]
     }
