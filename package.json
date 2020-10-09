@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Back End",
   "main": "index.js",
-  "homepage" : "https://jeffl84.github.io",
+  "homepage": "https://jeffl84.github.io",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.10.8"
   },
   "devDependencies": {
     "eslint": "^7.9.0",
