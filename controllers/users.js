@@ -1,6 +1,7 @@
 const path = require('path');
 const dataPath = path.join(__dirname, "..", "data", "users.json");
 const fs = require('fs').promises;
+const User = require('../models/user.js');
 
 const getDataFromFile = (pathToFile) => {
   return fs.readFile(pathToFile, { encoding: 'utf8'})
@@ -9,7 +10,8 @@ const getDataFromFile = (pathToFile) => {
 }
 
 const getUsers = (req, res) => {
-  return getDataFromFile(dataPath)
+  return User.find({})
+  //return User.find({});
     .then(users => {
       res.send(users)
     })
@@ -17,7 +19,8 @@ const getUsers = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  return getDataFromFile(dataPath)
+  return User.find({id: req.params.id})
+  //return User.find({id: req.params.id}); from 17:08 in live coding
     .then(users => {
       return users.find((user => user._id === req.params.id));
     })
@@ -31,4 +34,18 @@ const getUser = (req, res) => {
     .catch(() => res.status(500).send({message: "500 Internal server error"}))
 };
 
-module.exports = { getUsers , getUser };
+const createUser = (req, res) => {
+  const { name, about, avatar } = req.body;
+  return User.countDocuments({}) //from Live coding - may not be necessary for this task
+    .then(id => {
+      return User.create({name, about, avatar, id})
+    })
+    .then(user => {
+      res.status(200).send(user) //theory has this as an object {data: user}
+    })
+    .catch(err => {
+      res.status(400).send(err)
+    })
+}
+
+module.exports = { getUsers , getUser , createUser };

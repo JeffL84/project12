@@ -19,12 +19,17 @@ const cardSchema = new mongoose.Schema({
   }
   },
   owner: {
-    //link to the card author's model, ObjectId type, required field
+    type: String, //thought type ws supposed to be ObjectId but got error
+    required: true,
   },
   likes: {
+    type: Array,
+    default: [],
    //a list of users who liked the post, an ObjectId array, an empty array by default (default field)
     },
   createdAt: {
+    type: Date,
+    default: Date.now,
     //creation date, Date type, default value Date.now
   }
 });

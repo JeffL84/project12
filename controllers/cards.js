@@ -1,6 +1,7 @@
 const path = require('path');
 const cardDataPath = path.join(__dirname, "..", "data", "cards.json");
 const fs = require('fs').promises;
+const Card = require('../models/card.js');
 
 const getDataFromFile = (pathToFile) => {
   return fs.readFile(pathToFile, { encoding: 'utf8'})
@@ -9,11 +10,36 @@ const getDataFromFile = (pathToFile) => {
 }
 
 const getCards = (req, res) => {
-  return getDataFromFile(cardDataPath)
+  return Card.find({}) 
     .then(cards => {
       res.send(cards)
     })
     .catch(() => res.status(500).send({message: "500 Internal server error"}))
 }
 
-module.exports = { getCards };
+
+const createCard = (req, res) => {
+  const { name, link } = req.body;
+  return Card.create({name, link})
+    .then(card => {
+      res.status(200).send(card)
+    })
+    .catch(() => res.status(500).send({message: "500 Internal server error"}))
+}
+
+//somewhat helpful website: https://grokonez.com/node-js/nodejs-restapis-how-to-create-nodejs-express-restapis-post-get-put-delete-requests#Implement_Express_Application
+//not developed yet
+const deleteCard = (req, res) => {
+  const { id } = req.params._id;
+  return Card.deleteOne(id) //not sure how to connect this correctly
+    .then(card => {
+      res.status(200).send({card, message: "Card has been deleted"})
+    })
+    .catch(() => res.status(500).send({message: "500 Internal server error"}))
+}
+
+module.exports.createCard = (req, res) => { //step 5 in project - not sure I understand this yet
+  console.log(req.user._id); // _id will become accessible
+};
+
+module.exports = { getCards , createCard, deleteCard };
