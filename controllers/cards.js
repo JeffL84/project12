@@ -2,6 +2,7 @@ const path = require('path');
 const cardDataPath = path.join(__dirname, "..", "data", "cards.json");
 const fs = require('fs').promises;
 const Card = require('../models/card.js');
+const ERROR_CODE = 400;
 
 const getDataFromFile = (pathToFile) => {
   return fs.readFile(pathToFile, { encoding: 'utf8'})
@@ -12,9 +13,14 @@ const getDataFromFile = (pathToFile) => {
 const getCards = (req, res) => {
   return Card.find({})
     .then(cards => {
-      res.send(cards)
+      if (cards) {
+        return res.status(200).send(cards);
+      }
+      res.status(404).send({message: "There are no cards!"});
     })
-    .catch(() => res.status(500).send({message: "500 Internal server error"}))
+    .catch(() => {
+      return res.status(500).send({message: "500 Internal server error"})}
+      )
 }
 
 
@@ -24,7 +30,12 @@ const createCard = (req, res) => {
     .then(card => {
       res.status(200).send({card})
     })
-    .catch(() => res.status(500).send({message: "500 Internal server ERROR"}))
+    .catch((err) => {
+      if(err.name === 'card validation failed') {
+        return res.status(ERROR_CODE).send({message: "The data you sent is invalid"})
+      }
+      console.log('err', err)
+      res.status(500).send({message: "500 Internal server ERROR"})})
 }
 
 //somewhat helpful website: https://grokonez.com/node-js/nodejs-restapis-how-to-create-nodejs-express-restapis-post-get-put-delete-requests#Implement_Express_Application
@@ -42,4 +53,17 @@ module.exports.createCard = (req, res) => {
   console.log(req.user._id); // _id will become accessible
 };
 
-module.exports = { getCards , createCard, deleteCard };
+const likeCard = (req, res) => Card.findByIdAndUpdate(
+  req.params.cardId,
+  { $addToSet: { likes: req.user._id } }, // add _id to the array if it's not there yet
+  { new: true },
+);
+
+const dislikeCard = (req, res) => Card.findByIdAndUpdate(
+  req.params.cardId,
+  { $pull: { likes: req.user._id } }, // remove _id from the array
+  { new: true },
+)
+
+
+module.exports = { getCards , createCard, deleteCard , likeCard , dislikeCard };

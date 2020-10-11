@@ -2,6 +2,7 @@ const path = require('path');
 const dataPath = path.join(__dirname, "..", "data", "users.json");
 const fs = require('fs').promises;
 const User = require('../models/user.js');
+const ERROR_CODE = 400;
 
 const getDataFromFile = (pathToFile) => {
   return fs.readFile(pathToFile, { encoding: 'utf8'})
@@ -41,9 +42,31 @@ const createUser = (req, res) => {
     .then(user => {
       res.status(200).send({user}) //theory has this as an object {data: user}
     })
-    .catch(err => {
-      res.status(400).send(err)
-    })
+    .catch((err) => {
+      if(err.name === 'user validation failed') {
+        return res.status(ERROR_CODE).send({message: "The data you sent is invalid"})
+      }
+      console.log('err', err)
+      res.status(500).send({message: "500 Internal server ERROR"})})
 };
 
-module.exports = { getUsers , getUser , createUser };
+const changeUsername = (req, res) => {
+  // updating the name of the user found by _id - look back at this for errors
+  User.findByIdAndUpdate(req.params.id, 'name: req.body')
+    .then(user => res.send({ data: req.body }))
+    .catch((err) => {
+      //console.log(err);
+      res.status(500).send({ message: 'Error' });})
+};
+
+const changeAvatar = (req, res) => {
+  // updating the name of the user found by _id - look back at this for errors
+  User.findByIdAndUpdate(req.params.id, 'avatar: req.body')
+    .then(user => res.send({ data: req.body }))
+    .catch((err) => {
+      //console.log(err);
+      res.status(500).send({ message: 'Error' });})
+};
+
+
+module.exports = { getUsers , getUser , createUser , changeUsername , changeAvatar  };

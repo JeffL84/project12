@@ -19,7 +19,7 @@ const cardSchema = new mongoose.Schema({
   }
   },
   owner: {
-    type: mongoose.Schema.Types.ObjectId, //thought type ws supposed to be ObjectId but got error
+    type: String,//mongoose.Schema.Types.ObjectId, //thought type ws supposed to be ObjectId but got error
     required: true,
   },
   likes: {
