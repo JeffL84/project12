@@ -25,12 +25,10 @@ const cardSchema = new mongoose.Schema({
   likes: {
     type: Array,
     default: [],
-   //a list of users who liked the post, an ObjectId array, an empty array by default (default field)
     },
   createdAt: {
     type: Date,
     default: Date.now,
-    //creation date, Date type, default value Date.now
   }
 });
 

@@ -10,7 +10,7 @@ const getDataFromFile = (pathToFile) => {
 }
 
 const getCards = (req, res) => {
-  return Card.find({}) 
+  return Card.find({})
     .then(cards => {
       res.send(cards)
     })
@@ -22,9 +22,9 @@ const createCard = (req, res) => {
   const { name, link } = req.body;
   return Card.create({name, link})
     .then(card => {
-      res.status(200).send(card)
+      res.status(200).send({card})
     })
-    .catch(() => res.status(500).send({message: "500 Internal server error"}))
+    .catch(() => res.status(500).send({message: "500 Internal server ERROR"}))
 }
 
 //somewhat helpful website: https://grokonez.com/node-js/nodejs-restapis-how-to-create-nodejs-express-restapis-post-get-put-delete-requests#Implement_Express_Application
@@ -38,7 +38,7 @@ const deleteCard = (req, res) => {
     .catch(() => res.status(500).send({message: "500 Internal server error"}))
 }
 
-module.exports.createCard = (req, res) => { //step 5 in project - not sure I understand this yet
+module.exports.createCard = (req, res) => {
   console.log(req.user._id); // _id will become accessible
 };
 

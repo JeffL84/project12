@@ -36,16 +36,15 @@ const getUser = (req, res) => {
 
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
-  return User.countDocuments({}) //from Live coding - may not be necessary for this task
-    .then(id => {
-      return User.create({name, about, avatar, id})
-    })
+  //return User.countDocuments({}) //from Live coding - may not be necessary for this task
+    //.then(id => {})
+      return User.create({name, about, avatar})
     .then(user => {
-      res.status(200).send(user) //theory has this as an object {data: user}
+      res.status(200).send({user}) //theory has this as an object {data: user}
     })
     .catch(err => {
       res.status(400).send(err)
     })
-}
+};
 
 module.exports = { getUsers , getUser , createUser };
