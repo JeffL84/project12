@@ -19,11 +19,10 @@ const getUsers = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  return User.find({id: req.params.id})
+  return User.find({_id: req.params.id})
   //return User.find({id: req.params.id}); from 17:08 in live coding
-    .then(users => {
-      return users.find((user => user._id === req.params.id));
-    })
+    //.then(users => {
+    //  return users.find((user => user._id === req.params.id)); })
     .then(user => {
       if (user) {
         return res.status(200).send(user);
