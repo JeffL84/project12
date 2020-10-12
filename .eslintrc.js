@@ -5,7 +5,7 @@ module.exports = {
         "node": true
     },
     "extends": [
-        "eslint:base",
+        "eslint:airbnb-base",
     ],
     "parserOptions": {
         "ecmaVersion": 12,

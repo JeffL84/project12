@@ -1,14 +1,14 @@
 const path = require('path');
-const dataPath = path.join(__dirname, "..", "data", "users.json");
+//const dataPath = path.join(__dirname, "..", "data", "users.json");
 const fs = require('fs').promises;
 const User = require('../models/user.js');
 const ERROR_CODE = 400;
 
-const getDataFromFile = (pathToFile) => {
-  return fs.readFile(pathToFile, { encoding: 'utf8'})
-    .then(data => JSON.parse(data))
-    .catch(err => console.log(err))
-}
+// const getDataFromFile = (pathToFile) => {
+//   return fs.readFile(pathToFile, { encoding: 'utf8'})
+//     .then(data => JSON.parse(data))
+//     .catch(err => console.log(err))
+// }
 
 const getUsers = (req, res) => {
   return User.find({})
@@ -20,16 +20,16 @@ const getUsers = (req, res) => {
 };
 
 const getUser = (req, res) => {
+  //console.log(User.find({_id: req.params.id}));
   return User.find({_id: req.params.id})
-  //return User.find({id: req.params.id}); from 17:08 in live coding
-    //.then(users => {
-    //  return users.find((user => user._id === req.params.id)); })
-    .then(user => {
-      if (user) {
-        return res.status(200).send(user);
+    .then((user) => {
+      console.log("first", user);
+      if (!user) {
+        console.log("second", user);
+        return res.status(404).send({message: "There is no such user"});
       }
-
-      res.status(404).send({message: "There is no such user"});
+      console.log("third", user);
+      return res.status(200).send(user);
     })
     .catch(() => res.status(500).send({message: "500 Internal server error"}))
 };
@@ -43,11 +43,12 @@ const createUser = (req, res) => {
       res.status(200).send({user}) //theory has this as an object {data: user}
     })
     .catch((err) => {
-      if(err.name === 'user validation failed') {
-        return res.status(ERROR_CODE).send({message: "The data you sent is invalid"})
+      if (err.name === "ValidationError") {
+          res.status(400).send({ message: "User validation failed" });
+      } else {
+          res.status(500).send({ message: "Internal server error" });
       }
-      console.log('err', err)
-      res.status(500).send({message: "500 Internal server ERROR"})})
+  });
 };
 
 const changeUsername = (req, res) => {

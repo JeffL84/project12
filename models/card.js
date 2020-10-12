@@ -12,7 +12,7 @@ const cardSchema = new mongoose.Schema({
     validate: {
       validator(v) {
       //const regex = //(http:\/\/|https:\/\/)\w+.\w+(\/|.)\w*(\/|.)\w*(\/|.)\w*(\/|.)\w*#?/;
-      return /(http:\/\/|https:\/\/)\w+.\w+(\/|.)\w*(\/|.)\w*(\/|.)\w*(\/|.)\w*#?/.test(v);
+      return /(http:\/\/|https:\/\/)\w+.\w+(\/|\.)\w*(\/|\.)\w*(\/|\.)\w*(\/|\.)\w*#?/.test(v);
       //return v.match(regex);
       },
     message: 'Sorry, this is not a valid url',

@@ -4,11 +4,11 @@ const fs = require('fs').promises;
 const Card = require('../models/card.js');
 const ERROR_CODE = 400;
 
-const getDataFromFile = (pathToFile) => {
-  return fs.readFile(pathToFile, { encoding: 'utf8'})
-    .then(data => JSON.parse(data))
-    .catch(err => console.log(err))
-}
+// const getDataFromFile = (pathToFile) => {
+//   return fs.readFile(pathToFile, { encoding: 'utf8'})
+//     .then(data => JSON.parse(data))
+//     .catch(err => console.log(err))
+// }
 
 const getCards = (req, res) => {
   return Card.find({})
@@ -25,17 +25,18 @@ const getCards = (req, res) => {
 
 
 const createCard = (req, res) => {
-  const { name, link } = req.body;
-  return Card.create({name, link})
+  const { name, link, owner } = req.body;
+  return Card.create({name, link, owner})
     .then(card => {
       res.status(200).send({card})
     })
     .catch((err) => {
-      if(err.name === 'card validation failed') {
-        return res.status(ERROR_CODE).send({message: "The data you sent is invalid"})
+      if (err.name === "ValidationError") {
+          res.status(400).send({ message: "User validation failed" });
+      } else {
+          res.status(500).send({ message: "Internal server error" });
       }
-      console.log('err', err)
-      res.status(500).send({message: "500 Internal server ERROR"})})
+  }); 
 }
 
 //somewhat helpful website: https://grokonez.com/node-js/nodejs-restapis-how-to-create-nodejs-express-restapis-post-get-put-delete-requests#Implement_Express_Application
