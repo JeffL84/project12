@@ -21,17 +21,20 @@ const getUsers = (req, res) => {
 
 const getUser = (req, res) => {
   //console.log(User.find({_id: req.params.id}));
-  return User.find({_id: req.params.id})
+  return User.findById({_id: req.params.id})
     .then((user) => {
-      console.log("first", user);
-      if (!user) {
-        console.log("second", user);
-        return res.status(404).send({message: "There is no such user"});
+      if (user) {
+        return res.status(200).send(user);
       }
-      console.log("third", user);
-      return res.status(200).send(user);
     })
-    .catch(() => res.status(500).send({message: "500 Internal server error"}))
+    .catch((err) => {
+    if (err.name = "CastError") {
+      res.status(404).send({message: "There is no such user"});
+    }
+    else {
+      res.status(500).send({message: "500 Internal server error"})
+    }
+  })
 };
 
 const createUser = (req, res) => {
