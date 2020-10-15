@@ -5,7 +5,6 @@ const app = express();
 const { userRouter } = require('./routes/users.js');
 const { cardsRouter } = require('./routes/cards.js');
 const mongoose = require('mongoose');
-const { url } = require('inspector');
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
