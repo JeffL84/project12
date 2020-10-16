@@ -1,8 +1,5 @@
-const path = require('path');
-const cardDataPath = path.join(__dirname, "..", "data", "cards.json");
-const fs = require('fs').promises;
+
 const Card = require('../models/card.js');
-const ERROR_CODE = 400;
 
 // const getDataFromFile = (pathToFile) => {
 //   return fs.readFile(pathToFile, { encoding: 'utf8'})
@@ -36,7 +33,7 @@ const createCard = (req, res) => {
       } else {
           res.status(500).send({ message: "Internal server error" });
       }
-  }); 
+  });
 }
 
 //somewhat helpful website: https://grokonez.com/node-js/nodejs-restapis-how-to-create-nodejs-express-restapis-post-get-put-delete-requests#Implement_Express_Application
@@ -50,9 +47,9 @@ const deleteCard = (req, res) => {
     .catch(() => res.status(500).send({message: "500 Internal server error"}))
 }
 
-module.exports.createCard = (req, res) => {
-  console.log(req.user._id); // _id will become accessible
-};
+// module.exports.createCard = (req, res) => {
+//   console.log(req.user._id); // _id will become accessible
+// };
 
 const likeCard = (req, res) => Card.findByIdAndUpdate(
   req.params.cardId,
